@@ -95,7 +95,7 @@ const loginSlice = createSlice({
       alert("Đăng ký thành công");
     },
     [registerUser.rejected]: (state, { payload }) => {
-      alert("Tài khoản hoặc mật khẩu không chính xác");
+      alert(payload);
     },
     // UserSearch
 
