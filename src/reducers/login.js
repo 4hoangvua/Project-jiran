@@ -17,10 +17,8 @@ const initialState = {
 export const loginUser = createAsyncThunk(
   "userLogin/loginUser",
   async (info) => {
-    try {
-      const data = await loginAPI.signIn(info);
-      return data;
-    } catch (error) {}
+    const data = await loginAPI.signIn(info);
+    return data;
   }
 );
 export const registerUser = createAsyncThunk(
@@ -53,9 +51,8 @@ export const getUserByProjectId = createAsyncThunk(
 export const editUser = createAsyncThunk(
   "userLogin/editUser",
   async (infoUser, thunkAPI) => {
-    console.log(infoUser);
     const data = await loginAPI.editUser(infoUser);
-    await thunkAPI.dispatch(getUser(infoUser.id));
+    await thunkAPI.dispatch(getUser());
     return data;
   }
 );
@@ -82,20 +79,19 @@ const loginSlice = createSlice({
   extraReducers: {
     // Login
     [loginUser.fulfilled]: (state, { payload }) => {
-      if (typeof payload === "object") {
-        state.userInfo = payload;
-        localStorage.setItem("userLogin", JSON.stringify(payload));
-        openNotification("success", "Đăng nhập thành công.");
-      } else {
-        openNotification("error", payload);
-      }
+      state.userInfo = payload;
+      localStorage.setItem("userLogin", JSON.stringify(payload));
+      openNotification("success", "Đăng nhập thành công.");
+    },
+    [loginUser.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // Register
-    [registerUser.fulfilled]: (state, { payload }) => {
-      alert("Đăng ký thành công");
+    [registerUser.fulfilled]: () => {
+      openNotification("success", "Đăng ký thành công.");
     },
-    [registerUser.rejected]: (state, { payload }) => {
-      alert(payload);
+    [registerUser.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // UserSearch
 
@@ -109,29 +105,24 @@ const loginSlice = createSlice({
     },
     // get User By Projectid
     [getUserByProjectId.fulfilled]: (state, { payload }) => {
-      if (Array.isArray(payload)) state.allUserByProject = payload;
-      else {
-        openNotification("error", payload + "Please add member");
-      }
+      state.allUserByProject = payload;
     },
-    [getUserByProjectId.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [getUserByProjectId.rejected]: (state, { error }) => {
+      openNotification("error", `${error.message}.Please add member!`);
     },
     // edit user
     [editUser.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [editUser.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [editUser.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // delete user
     [deleteUser.fulfilled]: (state, { payload }) => {
-      if (payload == "Xóa thất bại!" || "Nguoi")
-        openNotification("error", `${payload}. Please create user new.`);
-      else openNotification("success", payload);
+      openNotification("success", payload);
     },
-    [deleteUser.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [deleteUser.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
   },
 });

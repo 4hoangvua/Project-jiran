@@ -7,6 +7,7 @@ const inititalState = {
     alert("4hoangvua");
   },
   title: "",
+  active2: false,
 };
 
 const modal = createSlice({
@@ -18,6 +19,14 @@ const modal = createSlice({
       state.ComponentContent = payload.Component;
       state.title = payload.title;
     },
+    openModalAccount: (state, { payload }) => {
+      state.active2 = true;
+      state.ComponentContent = payload.Component;
+      state.title = payload.title;
+    },
+    closeModalAccount: (state) => {
+      state.active2 = false;
+    },
     closeModal: (state) => {
       state.active = false;
     },
@@ -26,5 +35,11 @@ const modal = createSlice({
     },
   },
 });
-export const { openModal, closeModal, submitModal } = modal.actions;
+export const {
+  openModal,
+  closeModal,
+  submitModal,
+  openModalAccount,
+  closeModalAccount,
+} = modal.actions;
 export default modal.reducer;

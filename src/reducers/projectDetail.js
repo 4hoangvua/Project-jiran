@@ -104,7 +104,6 @@ export const updateTimeTracking = createAsyncThunk(
 export const updateTask = createAsyncThunk(
   "projectDetail/updateTask",
   async (infoTask, thunkAPI) => {
-    console.log(infoTask);
     const data = await projectDetailAPI.updateTask(infoTask);
     await thunkAPI.dispatch(getTaskDetail(infoTask.taskId)).unwrap();
     thunkAPI.dispatch(getProjectDetail(infoTask.projectId));
@@ -202,91 +201,89 @@ const projectDetailSlice = createSlice({
     },
     // Create task
     [createTask.fulfilled]: (state, { payload }) => {
-      if (typeof payload === "object")
-        openNotification("success", "Tạo thành công");
-      else openNotification("error", payload);
+      openNotification("success", "Tạo thành công");
     },
-    [createTask.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [createTask.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // get task detail
     [getTaskDetail.fulfilled]: (state, { payload }) => {
       state.taskDetail = payload;
     },
     // update status
-    [updateStatus.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updateStatus.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // update Priority
     [updatePriority.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [updatePriority.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updatePriority.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // update Description
     [updateDescription.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [updateDescription.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updateDescription.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // update Estimate
     [updateEstimate.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [updateEstimate.rejected]: (state, { payload }) => {
-      openNotification("success", payload);
+    [updateEstimate.rejected]: (state, { error }) => {
+      openNotification("success", error.message);
     },
 
     // update TimeTracking
     [updateTimeTracking.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [updateTimeTracking.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updateTimeTracking.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
 
     // update Task
     [updateTask.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [updateTask.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updateTask.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
 
     //  assign User Task
     [assignUserTask.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [assignUserTask.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [assignUserTask.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     //  Remove user from task
     [removeUserFromTask.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [removeUserFromTask.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [removeUserFromTask.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // insertComment
-    [insertComment.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [insertComment.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // updateComment
-    [updateComment.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [updateComment.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // deleteComment
-    [deleteComment.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [deleteComment.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // remove task
     [removeTask.fulfilled]: (state, { payload }) => {
       openNotification("success", payload);
     },
-    [removeTask.rejected]: (state, { payload }) => {
-      openNotification("error", payload);
+    [removeTask.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
   },
 });

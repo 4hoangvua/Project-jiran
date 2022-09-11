@@ -38,7 +38,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "deploy": "npm run build && cd build && copy index.html 200.html && surge"
   },
   "eslintConfig": {
     "extends": [

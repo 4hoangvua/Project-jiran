@@ -4,8 +4,8 @@ import { Input } from "~/components/Sign/SignElement";
 export const ContainerCreateProject = styled.div`
   padding: 1rem;
   max-width: 43.75rem;
-  max-height: auto;
-  margin: 1rem auto 3.75rem auto;
+  max-height: 33rem;
+  height: auto;
   text-align: center;
   color: ${({ theme }) => theme.c.primary};
   background: ${({ theme }) => theme.bg.primary};

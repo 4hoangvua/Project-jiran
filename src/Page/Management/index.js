@@ -49,6 +49,7 @@ const Management = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [value, setvalue] = useState("");
+  const [value1, setvalue1] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -167,8 +168,8 @@ const Management = () => {
       dataIndex: "id",
       key: "id",
       with: "10%",
-      sorter: (item2, item1) => {
-        return item2.id - item1.id;
+      sorter: (item1, item2) => {
+        return item1.id - item2.id;
       },
       sortDirections: ["descend"],
       ...getColumnSearchProps("id"),
@@ -462,12 +463,12 @@ const Management = () => {
             })}
             dropdownClassName="certain-category-search-dropdown"
             dropdownMatchSelectWidth={300}
-            value={value}
+            value={value1}
             onChange={(text) => {
-              setvalue(text);
+              setvalue1(text);
             }}
             onSelect={(valueSelect) => {
-              setvalue(valueSelect);
+              setvalue1(valueSelect);
               dispatch(getAllProject(valueSelect));
             }}
           >

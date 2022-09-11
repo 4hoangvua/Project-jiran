@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { HiOutlineViewBoards } from "react-icons/hi";
 import { MdOutlineTask } from "react-icons/md";
-import { AiFillCloseSquare } from "react-icons/ai";
+import { AiFillCloseSquare, AiOutlineUserAdd } from "react-icons/ai";
 
 import {
   AiOutlineSetting,
@@ -75,6 +75,12 @@ export const ItemUserManagement = styled(Link)`
   }
   ${Item}
 `;
+export const ItemCreateUser = styled.div`
+  &::after {
+    content: "Create user";
+  }
+  ${Item}
+`;
 export const ItemProject = styled(Link)`
   ${Item}
 `;
@@ -89,6 +95,9 @@ export const LogoBoard = styled(HiOutlineViewBoards)`
   ${Logo}
 `;
 export const LogoUserManagement = styled(GrUserManager)`
+  ${Logo}
+`;
+export const LogoCreateUser = styled(AiOutlineUserAdd)`
   ${Logo}
 `;
 export const LogoSetting = styled(AiOutlineSetting)`
@@ -133,6 +142,9 @@ export const CCardProject = styled.div`
   overflow-y: auto;
 `;
 export const CToggle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: left;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.2);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Avatar, Space, Tooltip, Typography } from "antd";
 
 const { Title } = Typography;
@@ -24,4 +24,4 @@ const Header = ({ projectDetail }) => {
   );
 };
 
-export default Header;
+export default memo(Header);

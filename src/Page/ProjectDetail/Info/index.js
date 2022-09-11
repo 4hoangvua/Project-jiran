@@ -1,6 +1,6 @@
 import { Col, Row, Tag } from "antd";
 import HTMLReactParser from "html-react-parser";
-import React from "react";
+import React, { memo } from "react";
 const Info = ({ projectDetail }) => {
   return (
     <>
@@ -24,4 +24,4 @@ const Info = ({ projectDetail }) => {
   );
 };
 
-export default Info;
+export default memo(Info);

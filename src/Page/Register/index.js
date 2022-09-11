@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -59,15 +59,22 @@ const Register = () => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onSubmit = async (values) => {
-    console.log(values);
-    try {
-      await dispatch(registerUser(values)).unwrap();
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
+  const [isLoading, setLoading] = useState(false);
+  const onSubmit = (values) => {
+    dispatch(registerUser(values)).then((value) => {
+      setLoading(true);
+      if (typeof value.payload === "object") {
+        navigate("/login");
+      } else {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    });
   };
+  // useEffect(()=>{
+
+  // },[isLoading])
   return (
     <CLogin>
       <Title>Register</Title>
@@ -102,7 +109,9 @@ const Register = () => {
         {errors.phoneNumber && (
           <ErrorSpan>{errors.phoneNumber?.message}</ErrorSpan>
         )}
-        <ButtonLogin>Sign Up</ButtonLogin>
+        <ButtonLogin disabled={isLoading}>
+          {isLoading ? "Sign Up..." : "Sign Up"}
+        </ButtonLogin>
       </Form>
       <Footer>
         Don't have taiKhoan yet?

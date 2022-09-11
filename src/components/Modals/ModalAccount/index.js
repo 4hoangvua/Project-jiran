@@ -1,57 +1,31 @@
-import { Avatar } from "antd";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { onLogOut } from "~/reducers/login";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModalAccount } from "~/reducers/modal";
 import {
   Backgournd,
   CModalAccount,
   Title,
   LogoClose,
-  Account,
-  Name,
-  Email,
-  Task,
-  LogoOut,
-  ButtonOut,
-  NameAccount,
-  CAccount,
-  CPhone,
-  Phone,
+  Content,
 } from "./ModalAccountElement";
-const ModalAccount = ({ showModal, setShowModal, userInfo, theme }) => {
+const ModalAccount = ({ theme }) => {
+  const { active2, ComponentContent, title } = useSelector(
+    (state) => state.mod
+  );
   const dispatch = useDispatch();
   const handleClose = () => {
-    setShowModal(!showModal);
+    dispatch(closeModalAccount());
   };
   return (
     <>
-      {showModal ? (
+      {active2 ? (
         <Backgournd onClick={handleClose}>
           <CModalAccount>
             <Title>
+              {title}
               <LogoClose onClick={handleClose} />
             </Title>
-            <Account>
-              <Name>
-                <Avatar src={userInfo.avatar} />
-              </Name>
-              <CAccount>
-                <NameAccount>{userInfo.name}</NameAccount>
-                <Email>{userInfo.email}</Email>
-              </CAccount>
-              <CPhone>
-                Phone number: <Phone> {userInfo.phoneNumber}</Phone>
-              </CPhone>
-            </Account>
-            <Task
-              onClick={() => {
-                dispatch(onLogOut());
-              }}
-            >
-              <ButtonOut bg={theme.bg.third}>
-                <LogoOut />
-              </ButtonOut>
-            </Task>
+            <Content>{ComponentContent}</Content>
           </CModalAccount>
         </Backgournd>
       ) : null}

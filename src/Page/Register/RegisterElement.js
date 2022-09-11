@@ -53,6 +53,8 @@ export const ButtonLogin = styled(ButtonDefault)`
   width: 50%;
   margin-top: 1rem;
   background: fixed ${({ theme }) => theme.bg.third};
+
+  ${({ disabled }) => (disabled ? `pointer-events: none;` : "")}
 `;
 
 export const SingIn = styled(Link)`

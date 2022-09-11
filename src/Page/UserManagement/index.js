@@ -5,6 +5,7 @@ import {
   Input,
   Popconfirm,
   Space,
+  Spin,
   Table,
   Tag,
 } from "antd";
@@ -17,15 +18,18 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { openModal } from "~/reducers/modal";
 import FormEditUser from "~/components/Form/FormEditUser";
 const { Search } = Input;
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
+
 const UserManagement = () => {
   const { userSearch, userAll } = useSelector((state) => state.log);
 
+  const [isBegin, setBegin] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUser());
+    const featData = async () => {
+      await dispatch(getUser()).unwrap();
+      setBegin(true);
+    };
+    featData();
   }, []);
   const data = userAll;
   const columns = [
@@ -141,51 +145,58 @@ const UserManagement = () => {
     </space>
   );
   return (
-    <Container>
-      <Title>User Management</Title>
-      <AutoComplete
-        className="certain-category-search text-primary"
-        onSearch={onSearch}
-        options={userSearch.map((user) => {
-          return {
-            label: renderTitle(user.name, user.avatar),
-            value: user.userId.toString(),
-          };
-        })}
-        dropdownClassName="certain-category-search-dropdown"
-        dropdownMatchSelectWidth={300}
-        value={value}
-        onChange={(text) => {
-          setvalue(text);
-        }}
-        onSelect={(valueSelect, option) => {
-          setvalue(option.label.key);
-          dispatch(getUser(valueSelect));
-        }}
-      >
-        <Search
-          placeholder=""
-          loading={false}
-          // onChange={onSearch}
-          enterButton
-          className="mb-2 text-opacity-50"
-          ref={searchRef}
-          suffix={<Tag>Ctrl + k</Tag>}
-          allowClear
-        />
-      </AutoComplete>
-      <Table
-        columns={columns}
-        dataSource={data}
-        onChange={onChange}
-        rowKey={"userId"}
-        pagination={{
-          defaultPageSize: "5",
-          showSizeChanger: true,
-          pageSizeOptions: ["5", "10", "15"],
-        }}
-      />
-    </Container>
+    <>
+      {isBegin ? (
+        <Container>
+          <Title>User Management</Title>
+          <AutoComplete
+            className="certain-category-search text-primary"
+            onSearch={onSearch}
+            options={userSearch.map((user) => {
+              return {
+                label: renderTitle(user.name, user.avatar),
+                value: user.userId.toString(),
+              };
+            })}
+            dropdownClassName="certain-category-search-dropdown"
+            dropdownMatchSelectWidth={300}
+            value={value}
+            onChange={(text) => {
+              setvalue(text);
+            }}
+            onSelect={(valueSelect, option) => {
+              setvalue(option.label.key);
+              dispatch(getUser(valueSelect));
+            }}
+          >
+            <Search
+              placeholder=""
+              loading={false}
+              // onChange={onSearch}
+              enterButton
+              className="mb-2 text-opacity-50"
+              ref={searchRef}
+              suffix={<Tag>Ctrl + k</Tag>}
+              allowClear
+            />
+          </AutoComplete>
+          <Table
+            columns={columns}
+            dataSource={data}
+            rowKey={"userId"}
+            pagination={{
+              defaultPageSize: "5",
+              showSizeChanger: true,
+              pageSizeOptions: ["5", "10", "15"],
+            }}
+          />
+        </Container>
+      ) : (
+        <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+          <Spin tip="Loading..." />
+        </div>
+      )}
+    </>
   );
 };
 

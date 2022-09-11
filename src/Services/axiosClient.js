@@ -19,10 +19,10 @@ axiosClient.interceptors.request.use((config) => {
 });
 axiosClient.interceptors.response.use(
   (response) => {
-    if (response.status === 200) return response.data.content;
+    return response.data.content;
   },
   (error) => {
-    return error.response.data.message;
+    return Promise.reject(error.response.data.message);
   }
 );
 

@@ -35,6 +35,7 @@ export const ButtonLogin = styled(ButtonDefault)`
   height: 2rem;
   width: 50%;
   margin-top: 2.5rem;
+  ${({ disabled }) => (disabled ? `pointer-events: none;` : "")}
 `;
 
 export const SingUp = styled(Link)`

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import img from "~/assets/image";
 
 export const Container = styled.div`
   margin: 0 auto;
@@ -25,14 +24,16 @@ export const CSidebar = styled.div`
   padding-bottom: 3.75rem;
 `;
 export const Content = styled.div`
+  display: flex;
+  justify-content: center;
   transition: 0.3s ease;
   width: ${({ IsToggle }) => (IsToggle ? "98%" : "80%")};
-  background-image: url(${img.templates});
+  background-image: url(${({ img }) => img});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
   overflow: auto;
-  padding: 0 0 2rem 0;
+  padding: 1rem 0;
 `;

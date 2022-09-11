@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,14 +41,20 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
   const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(false);
+
   const navigate = useNavigate();
-  const onSubmit = async (values) => {
-    try {
-      const data = await dispatch(loginUser(values)).unwrap();
-      if (typeof data === "object") navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = (values) => {
+    dispatch(loginUser(values)).then((m) => {
+      setLoading(true);
+      if (typeof m.payload === "object") {
+        navigate("/");
+      } else {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    });
   };
   return (
     <CLogin>
@@ -68,7 +74,9 @@ const Login = () => {
           />
           {errors.passWord && <ErrorSpan>{errors.passWord?.message}</ErrorSpan>}
         </LoginPassword>
-        <ButtonLogin bg={theme.bg.third}>Sign In</ButtonLogin>
+        <ButtonLogin disabled={isLoading} bg={theme.bg.third}>
+          {isLoading ? "Sign In..." : "Sign In"}
+        </ButtonLogin>
       </Form>
       <Footer>
         Don't have account yet?

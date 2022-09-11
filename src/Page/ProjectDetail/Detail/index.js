@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import { Card, Col, Row, Avatar, Tooltip, Modal, Button, Space } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ModalDetail from "~/components/Modals/ModalDetail";
 import { useDispatch } from "react-redux";
 import {
-  getAllPriority,
   getTaskDetail,
   removeTask,
   updateStatus,
@@ -25,7 +24,6 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 const Detail = ({ projectDetail }) => {
   const [visible, setVisible] = useState(false);
-  const { lstTask } = projectDetail;
   const dispatch = useDispatch();
   const handleDetail = async (taskId) => {
     try {
@@ -48,7 +46,7 @@ const Detail = ({ projectDetail }) => {
     <div className="site-card-wrapper rounded">
       <DragDropContext onDragEnd={handleEnter}>
         <Row gutter={8}>
-          {lstTask?.map((task, index) => {
+          {projectDetail.lstTask?.map((task, index) => {
             return (
               <Droppable droppableId={task.statusId} key={index}>
                 {(provided) => {
@@ -209,9 +207,9 @@ const Detail = ({ projectDetail }) => {
           })}
         </Row>
       </DragDropContext>
-      <ModalDetail visible={visible} setVisible={setVisible} />
+      {visible ? <ModalDetail visible={visible} setVisible={setVisible} /> : ""}
     </div>
   );
 };
 
-export default Detail;
+export default memo(Detail);

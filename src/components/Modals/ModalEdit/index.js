@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Backgournd,
   CClose,
@@ -16,6 +16,7 @@ const ModalEdit = () => {
   const { active, ComponentContent, callBackSubmit, title } = useSelector(
     (state) => state.mod
   );
+  const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(closeModal());
@@ -37,11 +38,15 @@ const ModalEdit = () => {
               <ButtonSubmit
                 type="submit"
                 onClick={() => {
+                  setLoading(true);
                   callBackSubmit();
+                  setTimeout(() => {
+                    setLoading(false);
+                  }, 1000);
                 }}
                 bg={theme.bg.third}
               >
-                Submit
+                {isLoading ? "Submit..." : "submit"}
               </ButtonSubmit>
             </Footer>
           </CModalEditProject>

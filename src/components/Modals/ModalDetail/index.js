@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import {
   Col,
   Modal,
@@ -7,16 +7,12 @@ import {
   Select,
   Tag,
   Avatar,
-  Popover,
-  AutoComplete,
   Space,
   InputNumber,
   Slider,
   Button,
   Comment,
-  Form,
   Input,
-  List,
   Dropdown,
   Menu,
 } from "antd";
@@ -35,7 +31,6 @@ import HTMLReactParser from "html-react-parser";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addUserMember,
   deleteComment,
   getAllPriority,
   getAllStatus,
@@ -110,7 +105,7 @@ const ModalDetail = ({ visible, setVisible }) => {
         <small>
           in list{" "}
           <Text underline>
-            {allStatus[Number(taskDetail.statusId) - 1].statusName}{" "}
+            {allStatus[Number(taskDetail.statusId) - 1]?.statusName}{" "}
           </Text>
         </small>
       </Row>
@@ -622,4 +617,4 @@ const ModalDetail = ({ visible, setVisible }) => {
   );
 };
 
-export default ModalDetail;
+export default memo(ModalDetail);

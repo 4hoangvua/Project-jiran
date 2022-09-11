@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -26,17 +26,21 @@ import {
   LogoCloseProject,
   NameProject,
   CAddCard,
+  ItemCreateUser,
+  LogoCreateUser,
 } from "./SidebarElement";
 import { Avatar } from "antd";
 import { FormCreateTaskProject } from "~/components/Form";
 import { openModal } from "~/reducers/modal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { removeCardProject } from "~/reducers/projectDetail";
+import FormCreateUser from "~/components/Form/FormCreateUser";
 
 const Sidebar = ({ IsToggle, setIsToggle }) => {
   const [isPosition, setposition] = useState("");
   const { cardProject } = useSelector((state) => state.proDetail);
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     setposition(location.pathname.slice(1));
@@ -47,6 +51,14 @@ const Sidebar = ({ IsToggle, setIsToggle }) => {
         openModal({
           Component: <FormCreateTaskProject />,
           title: "Create Task Project",
+        })
+      );
+    }
+    if (value === "createUser") {
+      dispatch(
+        openModal({
+          Component: <FormCreateUser />,
+          title: "Create user",
         })
       );
     }
@@ -100,6 +112,12 @@ const Sidebar = ({ IsToggle, setIsToggle }) => {
               >
                 <LogoUserManagement />
               </ItemUserManagement>
+              <ItemCreateUser
+                active={isPosition === "createUser" ? "true" : "false"}
+                onClick={() => handleActive("createUser")}
+              >
+                <LogoCreateUser />
+              </ItemCreateUser>
             </ListSidebar>
             <YourBoard>
               <Board />
@@ -128,6 +146,7 @@ const Sidebar = ({ IsToggle, setIsToggle }) => {
                     <LogoCloseProject
                       onClick={() => {
                         dispatch(removeCardProject(project.id));
+                        if (cardProject.length === 1) navigate("/management");
                       }}
                     />
                   </CAddCard>
@@ -141,4 +160,4 @@ const Sidebar = ({ IsToggle, setIsToggle }) => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

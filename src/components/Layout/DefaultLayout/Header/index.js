@@ -1,7 +1,11 @@
 import { Avatar } from "antd";
-import React, { useState } from "react";
+import React, { memo } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ModalAccount from "~/components/Modals/ModalAccount";
+import Account from "~/components/ShowInfo/Account";
+import ShowNotification from "~/components/ShowInfo/Notification";
+import { openModalAccount } from "~/reducers/modal";
 import {
   Container,
   Nav,
@@ -21,7 +25,7 @@ import {
 } from "./HeaderElement";
 const Header = ({ theme }) => {
   const { userInfo } = useSelector((state) => state.log);
-  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
   return (
     <Container>
       <Nav>
@@ -47,16 +51,29 @@ const Header = ({ theme }) => {
           ) : (
             <>
               {" "}
-              <LogoBell />
-              <Name onClick={() => setShowModal(!showModal)}>
+              <LogoBell
+                onClick={() => {
+                  dispatch(
+                    openModalAccount({
+                      Component: <ShowNotification />,
+                      title: "Notifications",
+                    })
+                  );
+                }}
+              />
+              <Name
+                onClick={() => {
+                  dispatch(
+                    openModalAccount({
+                      Component: <Account userInfo={userInfo} theme={theme} />,
+                      title: "Account",
+                    })
+                  );
+                }}
+              >
                 <Avatar src={userInfo.avatar} />
               </Name>
-              <ModalAccount
-                showModal={showModal}
-                setShowModal={setShowModal}
-                userInfo={userInfo}
-                theme={theme}
-              />
+              <ModalAccount />
             </>
           )}
         </NavName>
@@ -65,4 +82,4 @@ const Header = ({ theme }) => {
   );
 };
 
-export default Header;
+export default memo(Header);

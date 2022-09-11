@@ -17,7 +17,6 @@ export const getAllProjectCategory = createAsyncThunk(
 export const createProjectAuthorize = createAsyncThunk(
   "category/createProjectAuthorize",
   async (project) => {
-    console.log(project);
     return await createProjectAPI.createProjectAuthorize(project);
   }
 );
@@ -72,7 +71,10 @@ const projectCategory = createSlice({
     },
     // Create project
     [createProjectAuthorize.fulfilled]: (state, { payload }) => {
-      alert("Thanh cong");
+      openNotification("success", "Create success.");
+    },
+    [createProjectAuthorize.rejected]: (state, { error }) => {
+      openNotification("error", `${error.message}.Name project exits!`);
     },
     // get all project
     [getAllProject.fulfilled]: (state, { payload }) => {
@@ -85,20 +87,18 @@ const projectCategory = createSlice({
     },
     // add project
     [addUserProject.fulfilled]: (state, { payload }) => {
-      if (payload) {
-        openNotification("success", payload);
-      } else {
-        openNotification("error", "Add fail, Project Unauthorize!");
-      }
+      openNotification("success", payload);
+    },
+    [addUserProject.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // remove User From Project
 
     [removeUserFromProject.fulfilled]: (state, { payload }) => {
-      if (payload) {
-        openNotification("success", payload);
-      } else {
-        openNotification("error", "Delete fail, Project Unauthorize!");
-      }
+      openNotification("error", payload);
+    },
+    [removeUserFromProject.rejected]: (state, { error }) => {
+      openNotification("error", error.message);
     },
     // get project search
     [getProjectSearch.fulfilled]: (state, { payload }) => {
