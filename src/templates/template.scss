@@ -1,0 +1,6 @@
+.container-admin {
+  .form-admin + .list-admin,
+  .show-time-admin + .list-admin {
+    display: none;
+  }
+}
